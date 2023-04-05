@@ -1,0 +1,73 @@
+const int LEYE = 2;
+const int REYE = 10;
+
+
+const int LWF = 7;// LEFT WHEEL FOWARD
+const int LWB = 8;
+const int RWF = 4;
+const int RWB = 5; //RIGHT WHEEL BACK
+
+
+const int LWS = 6; // LEFT WHEEL SPEED 0-225
+const int RWS = 9;
+
+
+const int TRIG = 11;
+const int ECHO = 12;
+
+const int ENC = 3;
+
+volatile int counter = 0;
+
+int time = 0;
+int newtime = 0;
+
+
+void setup() {
+  Serial.begin(9600);
+
+
+  pinMode( LEYE, INPUT );
+  pinMode( REYE, INPUT );
+
+
+  pinMode(LWF, OUTPUT);
+  pinMode(LWB, OUTPUT);
+  pinMode(RWF, OUTPUT);
+  pinMode(RWB, OUTPUT);
+
+
+  pinMode(LWS, OUTPUT);
+  pinMode(RWS, OUTPUT);
+
+
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+
+  pinMode(ENC, INPUT_PULLUP);
+  attachInterrupt(ENC, Pulse, RISING);
+}
+
+void loop() {
+
+  
+  digitalWrite(LWF, HIGH);
+  digitalWrite(RWF, HIGH);
+
+
+  analogWrite(LWS, 255); 
+  analogWrite(RWS, 255);
+
+  time = millis();
+
+  if(time - newtime > 500){
+    Serial.println(counter);
+    counter = 0;
+    newtime = time;
+  }
+
+}
+
+void Pulse(){
+  counter++;
+}
